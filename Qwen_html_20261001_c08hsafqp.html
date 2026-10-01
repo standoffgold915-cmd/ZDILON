@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>LIT ENERGY — Почувствуй энергию</title>
+<meta name="description" content="LIT ENERGY — твой ритм, твой вкус, твоя энергия. Премиальный энергетический напиток нового поколения." />
+<meta property="og:title" content="LIT ENERGY — Почувствуй энергию" />
+<meta property="og:description" content="Твой ритм. Твой вкус. Твоя энергия." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#050505" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Unbounded:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#050505;
+    --bg2:#111114;
+    --red:#FF1744;
+    --red-soft:#ff3a5e;
+    --white:#F5F5F5;
+    --silver:#B8BCC4;
+    --line:rgba(245,245,245,.08);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--white);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{cursor:none}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--red);color:#fff}
+
+  /* ---------- Кастомный курсор ---------- */
+  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;mix-blend-mode:difference}
+  .cursor-dot{width:6px;height:6px;background:var(--white);transform:translate(-50%,-50%)}
+  .cursor-ring{width:38px;height:38px;border:1px solid rgba(245,245,245,.6);transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease)}
+  .cursor-ring.hover{width:64px;height:64px;border-color:var(--red);background:rgba(255,23,68,.08)}
+  @media (hover:none){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+  /* ---------- Loader ---------- */
+  .loader{position:fixed;inset:0;background:#050505;z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;transition:opacity .8s var(--ease),visibility .8s}
+  .loader.hide{opacity:0;visibility:hidden}
+  .loader-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(28px,5vw,48px);letter-spacing:.2em;color:var(--white)}
+  .loader-logo span{color:var(--red)}
+  .loader-bar{width:200px;height:2px;background:rgba(255,255,255,.1);overflow:hidden;position:relative}
+  .loader-bar::after{content:"";position:absolute;inset:0;background:var(--red);transform-origin:left;animation:load 1.6s var(--ease) forwards}
+  @keyframes load{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  /* ---------- NAV ---------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 36px;display:flex;align-items:center;justify-content:space-between;transition:background .4s var(--ease),padding .4s var(--ease),backdrop-filter .4s}
+  .nav.scrolled{background:rgba(5,5,5,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:14px 36px;border-bottom:1px solid var(--line)}
+  .logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:20px;letter-spacing:.18em;display:flex;align-items:center;gap:8px}
+  .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 14px var(--red)}
+  .logo em{color:var(--red);font-style:normal}
+  .nav-links{display:flex;gap:34px;align-items:center}
+  .nav-links a{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--silver);position:relative;padding:6px 0;transition:color .3s}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--red);transition:width .4s var(--ease)}
+  .nav-links a:hover,.nav-links a.active{color:var(--white)}
+  .nav-links a.active::after,.nav-links a:hover::after{width:100%}
+  .burger{display:none;width:34px;height:34px;flex-direction:column;justify-content:center;gap:6px;align-items:center}
+  .burger span{width:22px;height:1.5px;background:var(--white);transition:.3s}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  @media(max-width:900px){
+    .nav{padding:16px 20px}
+    .nav.scrolled{padding:12px 20px}
+    .nav-links{position:fixed;inset:0;background:rgba(5,5,5,.96);backdrop-filter:blur(20px);flex-direction:column;justify-content:center;gap:30px;transform:translateX(100%);transition:transform .6s var(--ease)}
+    .nav-links.open{transform:translateX(0)}
+    .nav-links a{font-size:22px;letter-spacing:.2em}
+    .burger{display:flex}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  #hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(80px,22vw,360px);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(255,23,68,.25);white-space:nowrap;pointer-events:none;z-index:0;opacity:.7}
+  .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;pointer-events:none}
+  .hero-eyebrow{font-size:12px;letter-spacing:.4em;color:var(--silver);text-transform:uppercase;margin-bottom:22px;opacity:0}
+  .hero-eyebrow::before{content:"";display:inline-block;width:30px;height:1px;background:var(--red);vertical-align:middle;margin-right:14px}
+  .hero h1{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.95;letter-spacing:-.02em;margin-bottom:22px}
+  .hero h1 .line{display:block;overflow:hidden}
+  .hero h1 .line span{display:inline-block;transform:translateY(110%)}
+  .hero h1 em{font-style:normal;color:var(--red);text-shadow:0 0 40px rgba(255,23,68,.5)}
+  .hero-sub{font-size:clamp(14px,1.4vw,18px);color:var(--silver);max-width:520px;margin:0 auto 40px;opacity:0;letter-spacing:.02em}
+  .hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;pointer-events:auto;opacity:0}
+  .btn{position:relative;padding:18px 34px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;border-radius:999px;overflow:hidden;transition:transform .4s var(--ease);display:inline-flex;align-items:center;gap:10px}
+  .btn-primary{background:var(--red);color:#fff;box-shadow:0 10px 40px -10px rgba(255,23,68,.7)}
+  .btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.3) 50%,transparent 70%);transform:translateX(-100%);transition:transform .7s var(--ease)}
+  .btn-primary:hover::before{transform:translateX(100%)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 50px -10px rgba(255,23,68,.9)}
+  .btn-ghost{border:1px solid rgba(245,245,245,.25);color:var(--white)}
+  .btn-ghost:hover{border-color:var(--red);color:var(--red)}
+  .btn svg{width:14px;height:14px}
+  .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;font-size:10px;letter-spacing:.4em;color:var(--silver);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .scroll-hint::after{content:"";width:1px;height:40px;background:linear-gradient(to bottom,var(--red),transparent);animation:scrollLine 2s infinite}
+  @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ---------- Sections ---------- */
+  section{position:relative;padding:140px 36px;overflow:hidden}
+  @media(max-width:700px){section{padding:90px 20px}}
+  .container{max-width:1280px;margin:0 auto;position:relative;z-index:2}
+  .section-head{margin-bottom:70px}
+  .section-eyebrow{font-size:11px;letter-spacing:.4em;color:var(--red);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .section-eyebrow::before{content:"";width:30px;height:1px;background:var(--red)}
+  .section-title{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(34px,6vw,84px);line-height:1;letter-spacing:-.02em}
+  .section-title em{font-style:normal;color:var(--red)}
+
+  /* ---------- Мир LIT ---------- */
+  .world{background:radial-gradient(ellipse at top,#1a0609 0%,#050505 60%)}
+  .world-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  .world-card{grid-column:span 4;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:24px;padding:36px;transition:transform .6s var(--ease),border-color .4s,background .4s;position:relative;overflow:hidden}
+  .world-card::before{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1px;background:linear-gradient(135deg,transparent,var(--red),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+  .world-card:hover{transform:translateY(-6px)}
+  .world-card:hover::before{opacity:1}
+  .world-card .num{font-family:'Unbounded',sans-serif;font-weight:800;font-size:48px;color:var(--red);margin-bottom:18px;line-height:1}
+  .world-card h3{font-family:'Unbounded',sans-serif;font-weight:600;font-size:22px;margin-bottom:12px}
+  .world-card p{color:var(--silver);font-size:15px;line-height:1.6}
+  @media(max-width:900px){.world-card{grid-column:span 12}}
+
+  /* ---------- Вкусы ---------- */
+  .flavors{background:#050505}
+  .flavors-stage{position:relative}
+  .flavors-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:20px 4px 40px}
+  .flavors-track::-webkit-scrollbar{display:none}
+  .flavor-card{flex:0 0 340px;scroll-snap-align:center;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:28px;padding:30px;position:relative;overflow:hidden;transition:transform .6s var(--ease),border-color .4s;min-height:520px;display:flex;flex-direction:column;justify-content:space-between}
+  .flavor-card::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent,rgba(255,23,68,.25)),transparent 60%);opacity:.5;pointer-events:none}
+  .flavor-card:hover{transform:translateY(-8px);border-color:rgba(255,23,68,.4)}
+  .flavor-visual{height:260px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+  .flavor-can{width:140px;height:280px;border-radius:14px;position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,.8),inset 0 0 40px rgba(0,0,0,.3);background:linear-gradient(180deg,var(--c1,#FF1744),var(--c2,#8a0020));transition:transform .8s var(--ease)}
+  .flavor-can::before{content:"";position:absolute;top:0;left:0;right:0;height:14px;background:linear-gradient(180deg,#2a2a2e,#1a1a1d);border-radius:14px 14px 0 0}
+  .flavor-can::after{content:"";position:absolute;bottom:0;left:0;right:0;height:14px;background:linear-gradient(0deg,#2a2a2e,#1a1a1d);border-radius:0 0 14px 14px}
+  .flavor-can .label{position:absolute;inset:20px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:'Unbounded',sans-serif;font-weight:900;text-align:center}
+  .flavor-can .label .l1{font-size:10px;letter-spacing:.3em;opacity:.8}
+  .flavor-can .label .l2{font-size:34px;line-height:1;margin:6px 0}
+  .flavor-can .label .l3{font-size:9px;letter-spacing:.25em;opacity:.7}
+  .flavor-can .shine{position:absolute;top:10%;left:10%;width:30%;height:70%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-15deg);pointer-events:none}
+  .flavor-card:hover .flavor-can{transform:rotateY(-12deg) translateY(-6px)}
+  .flavor-info{position:relative;z-index:1}
+  .flavor-info h3{font-family:'Unbounded',sans-serif;font-weight:700;font-size:24px;margin-bottom:6px}
+  .flavor-info .tag{font-size:11px;letter-spacing:.3em;color:var(--red);text-transform:uppercase;margin-bottom:14px}
+  .flavor-info p{color:var(--silver);font-size:14px;line-height:1.6;margin-bottom:18px}
+  .flavor-info .more{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);display:inline-flex;align-items:center;gap:8px;transition:gap .3s,color .3s}
+  .flavor-info .more:hover{gap:14px;color:var(--red)}
+  .flavors-nav{display:flex;justify-content:center;gap:10px;margin-top:20px}
+  .flavors-nav button{width:30px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;transition:.3s}
+  .flavors-nav button.active{background:var(--red);width:50px}
+
+  /* ---------- Внутри LIT ---------- */
+  .inside{background:linear-gradient(180deg,#050505,#0a0a0d)}
+  .inside-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  @media(max-width:900px){.inside-grid{grid-template-columns:1fr}}
+  .inside-visual{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+  .inside-can-big{width:260px;height:520px;border-radius:22px;background:linear-gradient(180deg,#FF1744,#5a0015);position:relative;box-shadow:0 60px 120px -40px rgba(255,23,68,.4),inset 0 0 80px rgba(0,0,0,.4);animation:floatY 6s ease-in-out infinite}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .inside-can-big .label{position:absolute;inset:40px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:'Unbounded',sans-serif;font-weight:900;text-align:center}
+  .inside-can-big .label .l2{font-size:62px;line-height:1}
+  .inside-can-big .label .l3{font-size:14px;letter-spacing:.3em;opacity:.8;margin-top:10px}
+  .inside-can-big .shine{position:absolute;top:8%;left:8%;width:30%;height:75%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-15deg)}
+  .pulse-ring{position:absolute;border:1px solid rgba(255,23,68,.3);border-radius:50%;animation:pulse 3s infinite}
+  .pulse-ring.r1{width:400px;height:400px;animation-delay:0s}
+  .pulse-ring.r2{width:560px;height:560px;animation-delay:1s}
+  .pulse-ring.r3{width:720px;height:720px;animation-delay:2s}
+  @keyframes pulse{0%{transform:scale(.8);opacity:.8}100%{transform:scale(1.3);opacity:0}}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .fact{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:22px;transition:.4s var(--ease);position:relative;overflow:hidden}
+  .fact:hover{background:rgba(255,23,68,.06);border-color:rgba(255,23,68,.3);transform:translateY(-3px)}
+  .fact .k{font-size:11px;letter-spacing:.3em;color:var(--silver);text-transform:uppercase;margin-bottom:8px}
+  .fact .v{font-family:'Unbounded',sans-serif;font-weight:700;font-size:26px;color:var(--white)}
+  .fact .v em{color:var(--red);font-style:normal}
+  .fact .d{font-size:13px;color:var(--silver);margin-top:6px;line-height:1.5}
+
+  /* ---------- LIT Experience ---------- */
+  .experience{background:#050505;min-height:100vh;display:flex;align-items:center}
+  #exp-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .exp-content{position:relative;z-index:2;text-align:center;width:100%}
+  .exp-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(60px,14vw,200px);line-height:.9;letter-spacing:-.02em;cursor:pointer;user-select:none;display:inline-block;transition:transform .6s var(--ease)}
+  .exp-logo em{font-style:normal;color:var(--red);text-shadow:0 0 60px rgba(255,23,68,.6)}
+  .exp-logo:hover{transform:scale(1.03)}
+  .exp-sub{margin-top:30px;color:var(--silver);font-size:14px;letter-spacing:.2em;text-transform:uppercase}
+  .exp-controls{display:flex;gap:14px;justify-content:center;margin-top:40px;flex-wrap:wrap}
+  .exp-btn{padding:12px 22px;border:1px solid var(--line);border-radius:999px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--silver);transition:.3s}
+  .exp-btn.active,.exp-btn:hover{border-color:var(--red);color:var(--white);background:rgba(255,23,68,.08)}
+
+  /* ---------- FAQ ---------- */
+  .faq{background:#050505}
+  .faq-search{max-width:600px;margin:0 auto 50px;position:relative}
+  .faq-search input{width:100%;padding:20px 26px 20px 54px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;color:var(--white);font-size:15px;outline:none;transition:.3s}
+  .faq-search input:focus{border-color:var(--red);background:rgba(255,23,68,.04)}
+  .faq-search svg{position:absolute;left:22px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--silver)}
+  .faq-list{max-width:900px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--line);overflow:hidden}
+  .faq-q{width:100%;padding:28px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;text-align:left;font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(16px,1.8vw,22px);transition:color .3s}
+  .faq-q:hover{color:var(--red)}
+  .faq-q .plus{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.4s var(--ease);position:relative}
+  .faq-q .plus::before,.faq-q .plus::after{content:"";position:absolute;background:var(--white);transition:.4s var(--ease)}
+  .faq-q .plus::before{width:12px;height:1px}
+  .faq-q .plus::after{width:1px;height:12px}
+  .faq-item.open .faq-q .plus{border-color:var(--red);transform:rotate(45deg)}
+  .faq-item.open .faq-q .plus::before,.faq-item.open .faq-q .plus::after{background:var(--red)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .6s var(--ease)}
+  .faq-a-inner{padding:0 0 28px;color:var(--silver);font-size:15px;line-height:1.7;max-width:780px}
+  .faq-ai-link{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:var(--red);font-size:13px;letter-spacing:.15em;text-transform:uppercase}
+
+  /* ---------- Footer ---------- */
+  footer{background:#050505;border-top:1px solid var(--line);padding:80px 36px 40px}
+  .foot-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:60px}
+  @media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
+  @media(max-width:500px){.foot-grid{grid-template-columns:1fr}}
+  .foot-brand h3{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(30px,4vw,54px);line-height:1;margin-bottom:18px}
+  .foot-brand h3 em{color:var(--red);font-style:normal}
+  .foot-brand p{color:var(--silver);font-size:14px;line-height:1.6;max-width:360px}
+  .foot-col h4{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-bottom:18px}
+  .foot-col a{display:block;padding:6px 0;font-size:14px;color:var(--white);transition:color .3s}
+  .foot-col a:hover{color:var(--red)}
+  .foot-bottom{max-width:1280px;margin:0 auto;padding-top:30px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--silver)}
+  .foot-bottom .warn{max-width:520px;line-height:1.5}
+  .socials{display:flex;gap:10px}
+  .socials a{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.3s}
+  .socials a:hover{border-color:var(--red);color:var(--red)}
+  .socials svg{width:16px;height:16px}
+
+  /* ---------- LIT AI ---------- */
+  .ai-fab{position:fixed;bottom:26px;right:26px;z-index:200;width:62px;height:62px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 40px -5px rgba(255,23,68,.7);transition:transform .4s var(--ease)}
+  .ai-fab::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--red);opacity:.5;animation:fabPulse 2s infinite}
+  @keyframes fabPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.5);opacity:0}}
+  .ai-fab:hover{transform:scale(1.08)}
+  .ai-fab svg{width:26px;height:26px;color:#fff}
+  .ai-fab .badge{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#0f0;border:2px solid #050505}
+
+  .ai-panel{position:fixed;bottom:100px;right:26px;z-index:200;width:min(400px,calc(100vw - 32px));height:min(620px,calc(100vh - 140px));background:linear-gradient(180deg,#0e0e11,#08080a);border:1px solid var(--line);border-radius:24px;display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px) scale(.95);opacity:0;visibility:hidden;transition:.5s var(--ease);box-shadow:0 30px 80px rgba(0,0,0,.7)}
+  .ai-panel.open{transform:translateY(0) scale(1);opacity:1;visibility:visible}
+  .ai-head{padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+  .ai-avatar{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--red-soft),#5a0015);display:flex;align-items:center;justify-content:center;position:relative}
+  .ai-avatar::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:1px solid var(--red);opacity:.5;animation:fabPulse 2.5s infinite}
+  .ai-head h4{font-family:'Unbounded',sans-serif;font-weight:700;font-size:15px}
+  .ai-head .status{font-size:11px;color:#0f0;display:flex;align-items:center;gap:6px}
+  .ai-head .status::before{content:"";width:6px;height:6px;border-radius:50%;background:#0f0;box-shadow:0 0 8px #0f0}
+  .ai-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;transition:.3s}
+  .ai-close:hover{border-color:var(--red);color:var(--red)}
+  .ai-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .ai-body::-webkit-scrollbar{width:4px}
+  .ai-body::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+  .msg{max-width:85%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5;animation:msgIn .4s var(--ease)}
+  @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .msg.bot{background:rgba(255,255,255,.05);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.user{background:var(--red);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .msg.typing{display:flex;gap:4px;padding:14px 18px}
+  .msg.typing span{width:6px;height:6px;border-radius:50%;background:var(--silver);animation:typing 1.4s infinite}
+  .msg.typing span:nth-child(2){animation-delay:.2s}
+  .msg.typing span:nth-child(3){animation-delay:.4s}
+  @keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+  .ai-quick{padding:0 20px 10px;display:flex;flex-wrap:wrap;gap:6px}
+  .ai-quick button{padding:7px 12px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;font-size:11px;color:var(--silver);transition:.3s}
+  .ai-quick button:hover{border-color:var(--red);color:var(--white)}
+  .ai-input{padding:14px 16px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+  .ai-input input{flex:1;background:transparent;border:0;outline:0;color:var(--white);font-size:14px;padding:8px 0}
+  .ai-input input::placeholder{color:var(--silver)}
+  .ai-send{width:38px;height:38px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;transition:.3s;flex-shrink:0}
+  .ai-send:hover{transform:scale(1.08)}
+  .ai-send:disabled{opacity:.4;cursor:not-allowed}
+  .ai-clear{padding:6px 10px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--silver);transition:.3s}
+  .ai-clear:hover{color:var(--red)}
+
+  /* ---------- Reveal ---------- */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-logo">LIT<em>.</em>ENERGY</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#top" class="logo"><span class="dot"></span>LIT<em>.</em>ENERGY</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#top" data-nav>Главная</a>
+    <a href="#world" data-nav>О бренде</a>
+    <a href="#flavors" data-nav>Вкусы</a>
+    <a href="#inside" data-nav>Состав</a>
+    <a href="#" data-ai>AI</a>
+    <a href="#footer" data-nav>Контакты</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg-text" id="heroBgText">LIT ENERGY</div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Premium Energy · Since Now</div>
+    <h1>
+      <span class="line"><span>ПОЧУВСТВУЙ</span></span>
+      <span class="line"><span><em>ЭНЕРГИЮ</em></span></span>
+    </h1>
+    <p class="hero-sub">Твой ритм. Твой вкус. Твоя энергия.</p>
+    <div class="hero-cta">
+      <a href="#flavors" class="btn btn-primary" data-magnetic>Исследовать LIT
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#flavors" class="btn btn-ghost" data-magnetic>Открыть вкусы</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- МИР LIT -->
+<section class="world" id="world">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Мир LIT Energy</div>
+      <h2 class="section-title">Энергия в каждом <em>моменте</em></h2>
+    </div>
+    <div class="world-grid">
+      <div class="world-card reveal">
+        <div class="num">01</div>
+        <h3>Ритм города</h3>
+        <p>LIT ENERGY создан для тех, кто живёт в движении. Утро, тренировка, дедлайн, ночь — напиток сопровождает каждый активный момент.</p>
+      </div>
+      <div class="world-card reveal">
+        <div class="num">02</div>
+        <h3>Честный состав</h3>
+        <p>Кофеин, таурин, витамины группы B и характерный вкус. Актуальный состав и пищевая ценность указаны на упаковке каждого продукта.</p>
+      </div>
+      <div class="world-card reveal">
+        <div class="num">03</div>
+        <h3>Современная культура</h3>
+        <p>Музыка, спорт, digital — LIT существует на пересечении технологий и энергии. Мы рядом с теми, кто создаёт будущее.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ВКУСЫ -->
+<section class="flavors" id="flavors">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Линейка вкусов</div>
+      <h2 class="section-title">Выбери свой <em>вкус</em></h2>
+    </div>
+    <div class="flavors-stage reveal">
+      <div class="flavors-track" id="flavorsTrack"></div>
+      <div class="flavors-nav" id="flavorsNav"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ВНУТРИ LIT -->
+<section class="inside" id="inside">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Что внутри</div>
+      <h2 class="section-title">Внутри <em>LIT</em></h2>
+    </div>
+    <div class="inside-grid">
+      <div class="inside-visual reveal">
+        <div class="pulse-ring r1"></div>
+        <div class="pulse-ring r2"></div>
+        <div class="pulse-ring r3"></div>
+        <div class="inside-can-big">
+          <div class="shine"></div>
+          <div class="label">
+            <div class="l1">LIT ENERGY</div>
+            <div class="l2">LIT.</div>
+            <div class="l3">449 ML · ENERGY DRINK</div>
+          </div>
+        </div>
+      </div>
+      <div class="facts reveal">
+        <div class="fact"><div class="k">Объём</div><div class="v"><em>449</em> мл</div><div class="d">Стандартный формат банки</div></div>
+        <div class="fact"><div class="k">Кофеин</div><div class="v"><em>32</em> мг/100 мл</div><div class="d">Типичное содержание для категории</div></div>
+        <div class="fact"><div class="k">Энергия</div><div class="v"><em>45</em> ккал</div><div class="d">На 100 мл продукта</div></div>
+        <div class="fact"><div class="k">Витамины</div><div class="v">B<em>3</em>·B<em>5</em>·B<em>6</em>·B<em>12</em></div><div class="d">Группа B в составе</div></div>
+        <div class="fact"><div class="k">Таурин</div><div class="v"><em>+</em></div><div class="d">Присутствует в формуле</div></div>
+        <div class="fact"><div class="k">Вкус</div><div class="v"><em>6+</em></div><div class="d">Линейка вкусов LIT</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIT EXPERIENCE -->
+<section class="experience" id="experience">
+  <canvas id="exp-canvas"></canvas>
+  <div class="container exp-content">
+    <div class="reveal">
+      <div class="exp-logo" id="expLogo">LIT<em>.</em></div>
+      <div class="exp-sub">Лаборатория энергии · двигай курсор · кликни по логотипу</div>
+      <div class="exp-controls">
+        <button class="exp-btn active" data-mode="red">RED PULSE</button>
+        <button class="exp-btn" data-mode="white">WHITE VOLT</button>
+        <button class="exp-btn" data-mode="mix">MIX MODE</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:center">
+      <div class="section-eyebrow" style="justify-content:center">FAQ</div>
+      <h2 class="section-title">Частые <em>вопросы</em></h2>
+    </div>
+    <div class="faq-search reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="faqSearch" placeholder="Найти ответ…" />
+    </div>
+    <div class="faq-list reveal" id="faqList"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <h3>Твоя энергия.<br><em>Твой мир.</em></h3>
+      <p>LIT ENERGY — премиальный энергетический напиток для тех, кто задаёт ритм. Употребляйте ответственно.</p>
+      <div class="socials" style="margin-top:22px">
+        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 3 2 10l6 2 2 7 4-4 5 4 3-16Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.2-1.5-.8-2.2c-.8-.8-1.7-.8-2.1-.9C17 3.7 12 3.7 12 3.7s-5 0-8.1.2c-.4.1-1.3.1-2.1.9C1.2 5.5 1 7 1 7S.7 8.8.7 10.6v1.8C.7 14.2 1 16 1 16s.2 1.5.8 2.2c.8.8 1.8.8 2.3.9 1.7.2 7.9.2 7.9.2s5 0 8.1-.2c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.2.8-2.2s.3-1.8.3-3.6v-1.8C23.3 8.8 23 7 23 7ZM9.8 14.3V8l5.3 3.2-5.3 3.1Z"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Навигация</h4>
+      <a href="#top">Главная</a>
+      <a href="#world">О бренде</a>
+      <a href="#flavors">Вкусы</a>
+      <a href="#inside">Состав</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="foot-col">
+      <h4>Контакты</h4>
+      <a href="mailto:hello@lit-energy.com">hello@lit-energy.com</a>
+      <a href="#">Пресса</a>
+      <a href="#">Партнёрство</a>
+    </div>
+    <div class="foot-col">
+      <h4>Правовое</h4>
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Пользовательское соглашение</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="warn">⚠ Продукт содержит кофеин. Не рекомендуется детям, беременным и кормящим женщинам, лицам с повышенной чувствительностью к кофеину. Не более 1 банки в день.</div>
+    <div>© 2026 LIT ENERGY. Все права защищены.</div>
+  </div>
+</footer>
+
+<!-- LIT AI -->
+<button class="ai-fab" id="aiFab" aria-label="Открыть LIT AI">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+</button>
+
+<div class="ai-panel" id="aiPanel" role="dialog" aria-label="LIT AI">
+  <div class="ai-head">
+    <div class="ai-avatar"></div>
+    <div>
+      <h4>LIT AI</h4>
+      <div class="status">онлайн</div>
+    </div>
+    <button class="ai-clear" id="aiClear">Очистить</button>
+    <button class="ai-close" id="aiClose" aria-label="Закрыть">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="ai-body" id="aiBody"></div>
+  <div class="ai-quick" id="aiQuick">
+    <button>Какие вкусы существуют?</button>
+    <button>Сколько кофеина в банке?</button>
+    <button>Какой состав?</button>
+    <button>Посоветуй вкус</button>
+  </div>
+  <form class="ai-input" id="aiForm">
+    <input type="text" id="aiInput" placeholder="Спроси LIT AI…" autocomplete="off" />
+    <button type="submit" class="ai-send" aria-label="Отправить">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
+    </button>
+  </form>
+</div>
+
+<!-- LIBS -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+/* =========================================================
+   LIT ENERGY — immersive site
+   ========================================================= */
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- Loader ---------- */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    heroIntro();
+  }, 1400);
+});
+
+/* ---------- Custom cursor ---------- */
+(() => {
+  if (matchMedia('(hover:none)').matches) return;
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.transform=`translate(${mx}px,${my}px)`; });
+  const loop = () => { rx += (mx-rx)*0.18; ry += (my-ry)*0.18; ring.style.transform=`translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); };
+  loop();
+  const hoverables = 'a,button,input,[data-magnetic]';
+  addEventListener('mouseover', e => { if (e.target.closest(hoverables)) ring.classList.add('hover'); });
+  addEventListener('mouseout',  e => { if (e.target.closest(hoverables)) ring.classList.remove('hover'); });
+})();
+
+/* ---------- Magnetic buttons ---------- */
+document.querySelectorAll('[data-magnetic]').forEach(el => {
+  if (matchMedia('(hover:none)').matches) return;
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width/2;
+    const y = e.clientY - r.top - r.height/2;
+    el.style.transform = `translate(${x*0.25}px,${y*0.35}px)`;
+  });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+});
+
+/* ---------- Nav ---------- */
+const nav = document.getElementById('nav');
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+addEventListener('scroll', () => { nav.classList.toggle('scrolled', scrollY > 40); });
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open'); navLinks.classList.remove('open');
+}));
+document.querySelectorAll('[data-nav]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const t = document.querySelector(a.getAttribute('href'));
+  if (t) lenis?.scrollTo(t, {duration:1.6});
+}));
+document.querySelectorAll('[data-ai]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); toggleAI(true); }));
+
+/* Active link on scroll */
+const sections = ['top','world','flavors','inside','experience','faq','footer'];
+const navMap = {};
+document.querySelectorAll('.nav-links a[data-nav]').forEach(a => { navMap[a.getAttribute('href').slice(1)] = a; });
+addEventListener('scroll', () => {
+  const y = scrollY + innerHeight*0.35;
+  let current = 'top';
+  sections.forEach(id => { const el = document.getElementById(id); if (el && el.offsetTop <= y) current = id; });
+  Object.values(navMap).forEach(a => a.classList.remove('active'));
+  if (navMap[current]) navMap[current].classList.add('active');
+});
+
+/* ---------- Lenis smooth scroll ---------- */
+let lenis;
+try {
+  lenis = new Lenis({ duration:1.2, smoothWheel:true, wheelMultiplier:0.9, touchMultiplier:1.4 });
+  const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(time => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+} catch(e){ console.warn('Lenis init failed', e); }
+
+/* ---------- HERO 3D ---------- */
+(() => {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x050505, 0.08);
+
+  const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 100);
+  camera.position.set(0, 0.2, 5);
+
+  /* Can label texture (procedural) */
+  function makeLabelTexture(){
+    const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
+    const g = c.getContext('2d');
+    // base gradient
+    const grd = g.createLinearGradient(0,0,0,512);
+    grd.addColorStop(0,'#1a0005'); grd.addColorStop(0.5,'#FF1744'); grd.addColorStop(1,'#5a0015');
+    g.fillStyle = grd; g.fillRect(0,0,1024,512);
+    // diagonal slashes
+    g.strokeStyle = 'rgba(0,0,0,0.35)'; g.lineWidth = 6;
+    for (let i=-512;i<1500;i+=80){ g.beginPath(); g.moveTo(i,0); g.lineTo(i+512,512); g.stroke(); }
+    // big LIT
+    g.fillStyle = '#fff'; g.font = '900 220px Unbounded, sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.fillText('LIT.', 512, 240);
+    // sub
+    g.font = '700 40px Inter, sans-serif'; g.letterSpacing = '8px';
+    g.fillText('E N E R G Y', 512, 360);
+    // small
+    g.font = '500 22px Inter, sans-serif'; g.fillStyle='rgba(255,255,255,0.8)';
+    g.fillText('449 ML · ENERGY DRINK', 512, 420);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 8;
+    return tex;
+  }
+
+  /* Simple env for reflections */
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envScene = new THREE.Scene();
+  envScene.background = new THREE.Color(0x0a0a0d);
+  const envLight1 = new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshBasicMaterial({color:0xff1744}));
+  envLight1.position.set(0,5,-10); envScene.add(envLight1);
+  const envLight2 = new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshBasicMaterial({color:0x222233}));
+  envLight2.position.set(-10,0,0); envLight2.rotation.y = Math.PI/2; envScene.add(envLight2);
+  const envLight3 = new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshBasicMaterial({color:0xffffff}));
+  envLight3.position.set(10,5,5); envLight3.lookAt(0,0,0); envScene.add(envLight3);
+  const envMap = pmrem.fromScene(envScene, 0.04).texture;
+  scene.environment = envMap;
+
+  /* Can geometry — cylinder with beveled top/bottom via lathe */
+  const canGroup = new THREE.Group();
+  const bodyGeo = new THREE.CylinderGeometry(0.7, 0.7, 2.2, 64, 1, true);
+  const label = makeLabelTexture();
+  const bodyMat = new THREE.MeshPhysicalMaterial({
+    map: label,
+    metalness: 0.85,
+    roughness: 0.28,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.25,
+    envMap,
+    envMapIntensity: 1.2
+  });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  canGroup.add(body);
+
+  // top lid
+  const lidMat = new THREE.MeshPhysicalMaterial({ color:0x1a1a1d, metalness:1, roughness:0.35, envMap });
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(0.68,0.7,0.08,64), lidMat);
+  top.position.y = 1.14; canGroup.add(top);
+  const topRing = new THREE.Mesh(new THREE.TorusGeometry(0.55,0.03,16,64), lidMat);
+  topRing.rotation.x = Math.PI/2; topRing.position.y = 1.18; canGroup.add(topRing);
+  // pull tab
+  const tab = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.02,0.4), lidMat);
+  tab.position.set(0,1.2,0); canGroup.add(tab);
+
+  // bottom
+  const bot = new THREE.Mesh(new THREE.CylinderGeometry(0.7,0.68,0.08,64), lidMat);
+  bot.position.y = -1.14; canGroup.add(bot);
+
+  canGroup.rotation.x = 0.1;
+  scene.add(canGroup);
+
+  /* Lights */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+  const key = new THREE.SpotLight(0xff1744, 40, 20, 0.6, 0.6); key.position.set(3,3,4); scene.add(key);
+  const rim = new THREE.PointLight(0xffffff, 12, 15); rim.position.set(-3,2,-2); scene.add(rim);
+  const fill = new THREE.PointLight(0x4466ff, 6, 12); fill.position.set(-4,-2,3); scene.add(fill);
+
+  /* Particles */
+  const pCount = REDUCED ? 80 : 300;
+  const pGeo = new THREE.BufferGeometry();
+  const pos = new Float32Array(pCount*3);
+  for (let i=0;i<pCount;i++){
+    pos[i*3]   = (Math.random()-0.5)*10;
+    pos[i*3+1] = (Math.random()-0.5)*6;
+    pos[i*3+2] = (Math.random()-0.5)*8 - 1;
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const pMat = new THREE.PointsMaterial({ color:0xff1744, size:0.02, transparent:true, opacity:0.7, blending:THREE.AdditiveBlending, depthWrite:false });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+
+  /* Mouse parallax */
+  let tx=0,ty=0,cx=0,cy=0;
+  addEventListener('mousemove', e => {
+    tx = (e.clientX/innerWidth - 0.5);
+    ty = (e.clientY/innerHeight - 0.5);
+  });
+
+  /* Resize */
+  addEventListener('resize', () => {
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+
+  /* Animate */
+  const clock = new THREE.Clock();
+  function tick(){
+    const t = clock.getElapsedTime();
+    cx += (tx-cx)*0.05; cy += (ty-cy)*0.05;
+    canGroup.rotation.y = t*0.3 + cx*1.2;
+    canGroup.rotation.x = 0.1 + cy*0.4;
+    canGroup.position.y = Math.sin(t*0.8)*0.08;
+    camera.position.x = cx*0.6;
+    camera.position.y = 0.2 - cy*0.3;
+    camera.lookAt(0,0,0);
+    particles.rotation.y = t*0.05;
+    particles.rotation.x = t*0.02;
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // scroll-driven cinematic
+  gsap.to(canGroup.rotation, { y: Math.PI*2, ease:'none',
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:1.2 }
+  });
+  gsap.to(camera.position, { z:7, y:1, ease:'none',
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:1.2 }
+  });
+  gsap.to('#heroBgText', { xPercent:-20, ease:'none',
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:1 }
+  });
+})();
+
+/* ---------- Hero intro animation ---------- */
+function heroIntro(){
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' }});
+  tl.to('.hero-eyebrow', { opacity:1, y:0, duration:1 }, 0.2)
+    .to('.hero h1 .line span', { y:'0%', duration:1.2, stagger:0.12 }, 0.3)
+    .to('.hero-sub', { opacity:1, y:0, duration:1 }, 0.9)
+    .to('.hero-cta', { opacity:1, y:0, duration:1 }, 1.1);
+}
+
+/* ---------- Reveal on scroll ---------- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- Flavors ---------- */
+const FLAVORS = [
+  { name:'Classic',     tag:'Original Energy',    desc:'Классический вкус LIT — яркий, характерный, узнаваемый. База линейки.', c1:'#FF1744', c2:'#5a0015' },
+  { name:'Tropical',    tag:'Mango · Passion',     desc:'Тропический микс манго и маракуйи. Солнце в банке.',                    c1:'#FFB300', c2:'#8a4a00' },
+  { name:'Arctic',      tag:'Ice · Mint',          desc:'Ледяная свежесть мяты. Холодный заряд энергии.',                        c1:'#00E5FF', c2:'#004d5a' },
+  { name:'Berry Blast', tag:'Forest Berries',      desc:'Лесные ягоды: малина, черника, ежевика. Насыщенный и сочный.',          c1:'#D500F9', c2:'#4a0072' },
+  { name:'Citrus Rush', tag:'Lemon · Lime',        desc:'Цитрусовый взрыв — лимон и лайм. Кисло-свежий финиш.',                  c1:'#C6FF00', c2:'#4a6600' },
+  { name:'Sugar Free',  tag:'Zero Sugar',          desc:'Тот же характерный вкус LIT — без сахара.',                             c1:'#B8BCC4', c2:'#2a2d33' }
+];
+const track = document.getElementById('flavorsTrack');
+const flavNav = document.getElementById('flavorsNav');
+FLAVORS.forEach((f,i) => {
+  const card = document.createElement('div');
+  card.className = 'flavor-card';
+  card.style.setProperty('--accent', f.c1+'55');
+  card.innerHTML = `
+    <div class="flavor-visual">
+      <div class="flavor-can" style="--c1:${f.c1};--c2:${f.c2}">
+        <div class="shine"></div>
+        <div class="label">
+          <div class="l1">LIT</div>
+          <div class="l2" style="font-size:22px">${f.name.toUpperCase()}</div>
+          <div class="l3">449 ML</div>
+        </div>
+      </div>
+    </div>
+    <div class="flavor-info">
+      <div class="tag">${f.tag}</div>
+      <h3>${f.name}</h3>
+      <p>${f.desc}</p>
+      <a href="#" class="more">Подробнее →</a>
+    </div>`;
+  track.appendChild(card);
+  const dot = document.createElement('button');
+  if (i===0) dot.classList.add('active');
+  dot.addEventListener('click', () => card.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }));
+  flavNav.appendChild(dot);
+});
+// update dots on scroll
+const dots = flavNav.querySelectorAll('button');
+const cards = track.querySelectorAll('.flavor-card');
+track.addEventListener('scroll', () => {
+  const center = track.scrollLeft + track.clientWidth/2;
+  let closest=0, min=Infinity;
+  cards.forEach((c,i)=>{
+    const d = Math.abs((c.offsetLeft + c.offsetWidth/2) - center);
+    if (d<min){min=d;closest=i;}
+  });
+  dots.forEach((d,i)=>d.classList.toggle('active', i===closest));
+});
+
+/* ---------- FAQ ---------- */
+const FAQS = [
+  { q:'Что такое LIT ENERGY?', a:'LIT ENERGY — бренд энергетических напитков с линейкой вкусов и характерным дизайном. Продукт предназначен для совершеннолетних потребителей.' },
+  { q:'Какие существуют вкусы?', a:'В линейке: Classic (оригинальный), Tropical (манго-маракуйя), Arctic (мята-лёд), Berry Blast (лесные ягоды), Citrus Rush (лимон-лайм) и Sugar Free (без сахара). Актуальный ассортимент уточняйте на упаковке и у ритейлеров.' },
+  { q:'Где производится напиток?', a:'Производство осуществляется на сертифицированных площадках, соответствующих требованиям пищевой безопасности. Страна производства указывается на банке.' },
+  { q:'Какой состав у напитка?', a:'Типичный состав: вода, сахар (или подсластители в версии Sugar Free), регуляторы кислотности, ароматизаторы, кофеин, таурин, витамины группы B (B3, B5, B6, B12), красители. Полный состав — на упаковке.' },
+  { q:'Сколько кофеина содержится в продукте?', a:'Ориентировочно 32 мг кофеина на 100 мл. В банке 449 мл — около 144 мг. Для сравнения: в чашке эспрессо примерно 60–80 мг кофеина.' },
+  { q:'Где можно купить LIT ENERGY?', a:'Напиток представлен в крупных розничных сетях, на АЗС и в магазинах формата convenience. Точки продаж уточняйте у локальных ритейлеров.' },
+  { q:'Как связаться с представителями бренда?', a:'По вопросам сотрудничества и поддержки — hello@lit-energy.com. Мы отвечаем в рабочие дни.' }
+];
+const faqList = document.getElementById('faqList');
+function renderFaq(list){
+  faqList.innerHTML = '';
+  list.forEach(f => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    item.innerHTML = `
+      <button class="faq-q"><span>${f.q}</span><span class="plus"></span></button>
+      <div class="faq-a"><div class="faq-a-inner">${f.a}
+        <a href="#" class="faq-ai-link" data-ai>Спросить LIT AI →</a>
+      </div></div>`;
+    faqList.appendChild(item);
+  });
+  faqList.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => {
+    const it = q.parentElement;
+    const a = it.querySelector('.faq-a');
+    const open = it.classList.toggle('open');
+    a.style.maxHeight = open ? a.scrollHeight + 'px' : 0;
+  }));
+  faqList.querySelectorAll('[data-ai]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); toggleAI(true); }));
+}
+renderFaq(FAQS);
+document.getElementById('faqSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  renderFaq(FAQS.filter(f => (f.q+f.a).toLowerCase().includes(q)));
+});
+
+/* ---------- LIT Experience canvas ---------- */
+(() => {
+  const c = document.getElementById('exp-canvas');
+  const ctx = c.getContext('2d');
+  let w,h,mode='red',mx=0,my=0,burst=0;
+  const resize = () => { w=c.width=innerWidth; h=c.height=c.parentElement.offsetHeight; };
+  resize(); addEventListener('resize', resize);
+  const parts = [];
+  const N = REDUCED ? 30 : 120;
+  for (let i=0;i<N;i++) parts.push({ x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+0.5, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4 });
+  c.parentElement.addEventListener('mousemove', e => {
+    const r = c.getBoundingClientRect();
+    mx = e.clientX - r.left; my = e.clientY - r.top;
+  });
+  document.querySelectorAll('.exp-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.exp-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); mode = b.dataset.mode;
+  }));
+  document.getElementById('expLogo').addEventListener('click', () => { burst = 1; });
+  function color(){
+    if (mode==='red') return 'rgba(255,23,68,';
+    if (mode==='white') return 'rgba(245,245,245,';
+    return Math.random()>0.5 ? 'rgba(255,23,68,' : 'rgba(245,245,245,';
+  }
+  function tick(){
+    ctx.fillStyle = 'rgba(5,5,5,0.18)'; ctx.fillRect(0,0,w,h);
+    parts.forEach(p => {
+      const dx = mx - p.x, dy = my - p.y;
+      const d = Math.hypot(dx,dy) + 0.01;
+      p.vx += dx/d * 0.02; p.vy += dy/d * 0.02;
+      p.vx *= 0.96; p.vy *= 0.96;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x<0||p.x>w) p.vx*=-1;
+      if (p.y<0||p.y>h) p.vy*=-1;
+      ctx.beginPath();
+      ctx.fillStyle = color() + (0.4 + Math.min(0.6, 60/d)) + ')';
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    });
+    // lines between close particles
+    for (let i=0;i<parts.length;i++) for (let j=i+1;j<parts.length;j++){
+      const a=parts[i],b=parts[j];
+      const d = Math.hypot(a.x-b.x,a.y-b.y);
+      if (d<110){
+        ctx.strokeStyle = color() + (0.15*(1-d/110)) + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+    if (burst>0){
+      ctx.strokeStyle = color() + burst + ')';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(w/2, h/2, (1-burst)*Math.max(w,h), 0, Math.PI*2); ctx.stroke();
+      burst -= 0.015; if (burst<0) burst=0;
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ---------- LIT AI ---------- */
+const AI = (() => {
+  const fab = document.getElementById('aiFab');
+  const panel = document.getElementById('aiPanel');
+  const close = document.getElementById('aiClose');
+  const clear = document.getElementById('aiClear');
+  const body = document.getElementById('aiBody');
+  const form = document.getElementById('aiForm');
+  const input = document.getElementById('aiInput');
+  const quick = document.getElementById('aiQuick');
+
+  const KB = {
+    'вкус': 'В линейке LIT ENERGY: Classic (оригинальный), Tropical (манго-маракуйя), Arctic (мята-лёд), Berry Blast (лесные ягоды), Citrus Rush (лимон-лайм) и Sugar Free (без сахара).',
+    'кофеин': 'Ориентировочно 32 мг кофеина на 100 мл. В банке 449 мл — около 144 мг. Это сопоставимо с двумя чашками эспрессо.',
+    'состав': 'Типичный состав: вода, сахар (или подсластители в Sugar Free), регуляторы кислотности, ароматизаторы, кофеин, таурин, витамины B3, B5, B6, B12, красители. Актуальный состав — на упаковке.',
+    'объём': 'Стандартный формат банки — 449 мл.',
+    'калори': 'Ориентировочная энергетическая ценность — около 45 ккал на 100 мл. В версии Sugar Free — значительно меньше.',
+    'где купить': 'LIT ENERGY представлен в крупных розничных сетях, на АЗС и в магазинах формата convenience.',
+    'бренд': 'LIT ENERGY — бренд энергетических напитков. Ритм, вкус, энергия — три принципа, на которых строится продукт.',
+    'отличи': 'Вкусы отличаются ароматическим профилем: Classic — оригинальный, Tropical — фруктовый, Arctic — ментоловый, Berry Blast — ягодный, Citrus Rush — цитрусовый, Sugar Free — без сахара.',
+    'совет': 'Если любишь классику — Classic. Хочешь свежести — Arctic или Citrus Rush. Нравится фруктовое — Tropical или Berry Blast. Следишь за сахаром — Sugar Free.',
+    'здоров': 'Я не даю медицинских рекомендаций. Продукт содержит кофеин, не рекомендуется детям, беременным и кормящим, а также лицам с чувствительностью к кофеину. Не более 1 банки в день.'
+  };
+  function answer(q){
+    const t = q.toLowerCase();
+    for (const k in KB) if (t.includes(k)) return KB[k];
+    if (/(привет|здравств|хай|hello)/.test(t)) return 'Привет! ⚡ Рад тебя видеть. Спроси о вкусах, составе или банке — расскажу всё, что знаю.';
+    if (/(спасибо|благодар)/.test(t)) return 'Всегда пожалуйста! ⚡';
+    return 'Хороший вопрос. Я работаю с проверенной информацией о LIT ENERGY: вкусы, состав, кофеин, объём, где купить. Уточни, пожалуйста, что именно тебя интересует?';
+  }
+
+  function addMsg(text, who='bot'){
+    const m = document.createElement('div');
+    m.className = 'msg ' + who;
+    m.textContent = text;
+    body.appendChild(m);
+    body.scrollTop = body.scrollHeight;
+    return m;
+  }
+  function typing(){
+    const m = document.createElement('div');
+    m.className = 'msg bot typing';
+    m.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(m);
+    body.scrollTop = body.scrollHeight;
+    return m;
+  }
+
+  async function send(text){
+    if (!text.trim()) return;
+    addMsg(text, 'user');
+    const t = typing();
+    // Server integration point:
+    // try {
+    //   const r = await fetch('/api/lit-ai', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ message:text }) });
+    //   const data = await r.json();
+    //   t.remove(); addMsg(data.reply, 'bot'); return;
+    // } catch(e) { /* fallback to demo */ }
+    await new Promise(r => setTimeout(r, 700 + Math.random()*600));
+    t.remove();
+    addMsg(answer(text), 'bot');
+  }
+
+  function welcome(){
+    if (body.children.length) return;
+    addMsg('Привет! ⚡ Я LIT AI. Хочешь узнать больше о вкусах, составе или самом напитке? Спрашивай!');
+  }
+
+  window.toggleAI = (open) => {
+    const willOpen = open ?? !panel.classList.contains('open');
+    panel.classList.toggle('open', willOpen);
+    if (willOpen) { welcome(); setTimeout(()=>input.focus(), 400); }
+  };
+  fab.addEventListener('click', () => toggleAI());
+  close.addEventListener('click', () => toggleAI(false));
+  clear.addEventListener('click', () => { body.innerHTML = ''; welcome(); });
+  form.addEventListener('submit', e => { e.preventDefault(); const v = input.value; input.value=''; send(v); });
+  quick.querySelectorAll('button').forEach(b => b.addEventListener('click', () => send(b.textContent)));
+})();
+
+/* ---------- ScrollTrigger reveals ---------- */
+gsap.registerPlugin(ScrollTrigger);
+gsap.utils.toArray('.world-card').forEach((c,i) => {
+  gsap.from(c, { y:60, opacity:0, duration:1, delay:i*0.1, ease:'power3.out',
+    scrollTrigger:{ trigger:c, start:'top 85%' }
+  });
+});
+gsap.utils.toArray('.fact').forEach((c,i) => {
+  gsap.from(c, { y:40, opacity:0, duration:.8, delay:i*0.08, ease:'power3.out',
+    scrollTrigger:{ trigger:c, start:'top 88%' }
+  });
+});
+gsap.to('.inside-can-big', {
+  y: -20, ease:'none',
+  scrollTrigger:{ trigger:'.inside', start:'top bottom', end:'bottom top', scrub:1 }
+});
+</script>
+</body>
+</html>
